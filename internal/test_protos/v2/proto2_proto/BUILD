@@ -6,13 +6,13 @@ proto_library(
     srcs = ["test.proto"],
     visibility = ["//visibility:public"],
     deps = [
-        
+
     ],
 )
 
 go_proto_library(
     name = "test_go_proto",
-    importpath = "github.com/romnn/bsonpb/internal/testprotos/v2/proto2_proto",
+    importpath = "github.com/onewealthplace/bsonpb/internal/testprotos/v2/proto2_proto",
     proto = ":test_proto",
     visibility = ["//visibility:public"],
     deps = [],

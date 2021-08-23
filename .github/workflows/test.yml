@@ -18,7 +18,7 @@ jobs:
         go get -u github.com/mitchellh/gox
         # do not change go.mod and go.sum
         git checkout go.mod go.sum
-    
+
     - name: code checks
       uses: pre-commit/action@v2.0.0
       with:
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: romnnn/setup-bazel-action@master
+    - uses: onewealthplacen/setup-bazel-action@master
       with:
         version: 3.7.2
 

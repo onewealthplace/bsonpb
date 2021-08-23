@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
 	"unicode/utf8"
 
 	"github.com/lunemec/as"
@@ -391,6 +392,18 @@ func (d decoder) unmarshalScalar(doc interface{}, fd pref.FieldDescriptor) (pref
 			if i64, err := as.Int64(vdoc.Uint()); err == nil {
 				return pref.ValueOfInt64(i64), nil
 			}
+		case reflect.String:
+			if strings.Contains(vdoc.String(), "Z") {
+				parse, err := time.Parse("2006-01-02T15:04:05", strings.Split(vdoc.String(), ".")[0])
+				if err == nil {
+					return pref.ValueOfInt64(int64(parse.Unix())), nil
+				}
+			} else {
+				atoi, err := strconv.Atoi(vdoc.String())
+				if err == nil {
+					return pref.ValueOfInt64(int64(atoi)), nil
+				}
+			}
 		}
 
 	case pref.Uint32Kind, pref.Fixed32Kind:
@@ -431,6 +444,8 @@ func (d decoder) unmarshalScalar(doc interface{}, fd pref.FieldDescriptor) (pref
 		switch docType.Kind() {
 		case reflect.Float32, reflect.Float64:
 			return pref.ValueOfFloat64(float64(vdoc.Float())), nil
+		case reflect.Int32, reflect.Int64:
+			return pref.ValueOfFloat64(float64(vdoc.Int())), nil
 		}
 
 	case pref.StringKind:

@@ -39,8 +39,8 @@ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
 
 go_repository(
-    name = "com_github_romnn_deepequal",
-    importpath = "github.com/romnn/deepequal",
+    name = "com_github_onewealthplace_deepequal",
+    importpath = "github.com/onewealthplace/deepequal",
     sum = "h1:EPrCg4JRVbyyZfms/ET2tV5Px/bUvLuR+tviDJLL0rg=",
     version = "v0.0.2",
 )
