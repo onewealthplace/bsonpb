@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"google.golang.org/protobuf/types/known/structpb"
 	"reflect"
 	"strconv"
 	"strings"
@@ -307,8 +308,7 @@ func (d decoder) unmarshalEmpty(val interface{}, m pref.Message) error {
 // Struct.fields map and follows the serialization rules for a map.
 
 func (e encoder) marshalStruct(m pref.Message) (interface{}, error) {
-	fd := m.Descriptor().Fields().ByNumber(genid.Struct_Fields_field_number)
-	return e.marshalMap(m.Get(fd).Map(), fd)
+	return m.Interface().(*structpb.Struct).AsMap(), nil
 }
 
 func (d decoder) unmarshalStruct(val interface{}, m pref.Message) error {
