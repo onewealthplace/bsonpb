@@ -59,6 +59,12 @@ func wellKnownTypeMarshaler(name pref.FullName) marshalFunc {
 			return encoder.marshalPMongo
 		}
 	}
+	if name.Parent() == genid.AFKey_package {
+		switch name.Name() {
+		case genid.AFKey_message_name:
+			return encoder.marshalAFKey
+		}
+	}
 	return nil
 }
 
@@ -101,6 +107,12 @@ func wellKnownTypeUnmarshaler(name pref.FullName) unmarshalFunc {
 		switch name.Name() {
 		case genid.ObjectId_message_name:
 			return decoder.unmarshalPMongo
+		}
+	}
+	if name.Parent() == genid.AFKey_package {
+		switch name.Name() {
+		case genid.AFKey_message_name:
+			return decoder.unmarshalAFKey
 		}
 	}
 	return nil
@@ -738,6 +750,23 @@ func (d decoder) unmarshalPMongo(val interface{}, m pref.Message) error {
 
 	if oid, ok := val.(primitive.ObjectID); ok {
 		m.Set(value, pref.ValueOfBytes(oid[:]))
+		return nil
+	}
+	return nil
+}
+
+func (e encoder) marshalAFKey(m pref.Message) (interface{}, error) {
+	fd := m.Descriptor().Fields().ByNumber(genid.AFKey_Id_field_number)
+	b := m.Get(fd).String()
+	return b, nil
+}
+
+func (d decoder) unmarshalAFKey(val interface{}, m pref.Message) error {
+	fds := m.Descriptor().Fields()
+	value := fds.ByNumber(genid.AFKey_Id_field_number)
+
+	if id, ok := val.(string); ok {
+		m.Set(value, pref.ValueOfString(id))
 		return nil
 	}
 	return nil
