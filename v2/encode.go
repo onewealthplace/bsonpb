@@ -90,6 +90,7 @@ type MarshalOptions struct {
 	//  ║ {}    │ map fields                 ║
 	//  ╚═══════╧════════════════════════════╝
 	EmitUnpopulated bool
+	EmitNull        bool
 
 	// Resolver is used for looking up types when expanding google.protobuf.Any
 	// messages. If nil, this defaults to using protoregistry.GlobalTypes.
@@ -200,6 +201,12 @@ func (e encoder) marshalFields(m pref.Message) (bson.D, error) {
 		marshaled, err := e.marshalValue(val, fd)
 		if err != nil {
 			return bson.D{}, err
+		}
+		switch marshaled.(type) {
+		case primitive.Null:
+			if !e.opts.EmitNull {
+				continue
+			}
 		}
 		result = append(result, bson.E{Key: name, Value: marshaled})
 	}
