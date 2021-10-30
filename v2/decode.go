@@ -96,6 +96,9 @@ type decoder struct {
 // unmarshalMessage unmarshals a message into the given protoreflect.Message.
 func (d decoder) unmarshalMessage(doc interface{}, m pref.Message, skipTypeURL bool) error {
 	if unmarshalFunc := wellKnownTypeUnmarshaler(m.Descriptor().FullName()); unmarshalFunc != nil {
+		if doc == nil {
+			return nil
+		}
 		return unmarshalFunc(d, doc, m)
 	}
 
