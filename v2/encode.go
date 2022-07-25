@@ -91,6 +91,7 @@ type MarshalOptions struct {
 	//  ╚═══════╧════════════════════════════╝
 	EmitUnpopulated bool
 	EmitNull        bool
+	EmitOptionals   bool
 
 	// Resolver is used for looking up types when expanding google.protobuf.Any
 	// messages. If nil, this defaults to using protoregistry.GlobalTypes.
@@ -166,7 +167,7 @@ func (e encoder) marshalFields(m pref.Message) (bson.D, error) {
 	fieldDescs := messageDesc.Fields()
 	for i := 0; i < fieldDescs.Len(); {
 		fd := fieldDescs.Get(i)
-		if od := fd.ContainingOneof(); od != nil {
+		if od := fd.ContainingOneof(); od != nil && ((!fd.HasOptionalKeyword() && e.opts.EmitOptionals) || !e.opts.EmitOptionals) {
 			fd = m.WhichOneof(od)
 			i += od.Fields().Len()
 			if fd == nil {
