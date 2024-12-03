@@ -9,7 +9,6 @@ require (
 	github.com/gobuffalo/gogen v0.1.1 // indirect
 	github.com/karrick/godirwalk v1.10.3 // indirect
 	github.com/lunemec/as v1.0.0
-	github.com/onewealthplace/ad-proto-go v0.0.0-20210915130720-a3b7d2a773f4
 	github.com/pelletier/go-toml v1.7.0 // indirect
 	github.com/sirupsen/logrus v1.4.2 // indirect
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
